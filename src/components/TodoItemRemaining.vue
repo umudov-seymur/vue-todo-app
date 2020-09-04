@@ -4,9 +4,9 @@
 
 <script>
 export default {
-  props: {
-    remaining: {
-      type: Number,
+  computed: {
+    remaining() {
+      return this.$store.getters.remaining;
     },
   },
 };

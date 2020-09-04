@@ -1,10 +1,11 @@
 import Vue from "vue";
 import App from "./App.vue";
 
-window.EventBus = new Vue();
+import Paginate from "vuejs-paginate";
+Vue.component("paginate", Paginate);
 
 // vuex state
-// import { store } from "../store/index";
+import { store } from "@/store/index";
 
 Vue.directive("focus", {
   // When the bound element is inserted into the DOM...
@@ -23,6 +24,6 @@ Vue.filter("capitalize", function(value) {
 Vue.config.productionTip = false;
 
 new Vue({
-  // store,
+  store,
   render: (h) => h(App),
 }).$mount("#app");

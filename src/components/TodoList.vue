@@ -1,26 +1,44 @@
 <template>
   <div>
     <!-- ############ NEW TODO ############ -->
-    <TodoAdd @newTodos="addTodo" />
+    <TodoAdd />
     <!-- ############ TODO LIST ############ -->
-    <div class="todo-list" v-if="todos.length > 0">
-      <TodoItem
-        v-for="todo in filteredTodos"
-        :todo="todo"
-        :checkAll="!anyRemaining"
-        :key="todo.id"
-      />
-    </div>
-    <div v-else>
-      Not found's todos!
-      <hr />
-    </div>
-    <!-- ############ TODO ACTION TABS ############ -->
-    <div class="todo-tabs">
-      <todo-check-all :anyRemaining="anyRemaining" />
-      <todo-item-remaining :remaining="remaining" />
-      <todo-tabs :showClearBtn="showClearBtn" />
-    </div>
+    <Loading>
+      <div v-if="todosFiltered.length > 0">
+        <div class="todo-list">
+          <transition-group
+            name="fade"
+            enter-active-class="animated fadeInUp"
+            leave-active-class="animated fadeOutDown"
+          >
+            <TodoItem
+              v-for="todo in todosFiltered"
+              :todo="todo"
+              :key="todo.id"
+            />
+          </transition-group>
+        </div>
+        <!-- ############ TODO ACTION TABS ############ -->
+        <div class="todo-tabs">
+          <todo-check-all />
+          <todo-item-remaining />
+          <todo-tabs />
+        </div>
+        <paginate
+          :page-count="pageCount"
+          :click-handler="getTodosByPage"
+          v-model="page"
+          :prev-text="'Prev'"
+          :next-text="'Next'"
+          :container-class="'pagination'"
+        >
+        </paginate>
+      </div>
+      <div v-else>
+        Not found's todos!
+        <hr />
+      </div>
+    </Loading>
   </div>
 </template>
 
@@ -29,76 +47,31 @@ import TodoCheckAll from "@/components/TodoCheckAll";
 import TodoTabs from "@/components/TodoTabs";
 import TodoItemRemaining from "@/components/TodoItemRemaining";
 import TodoAdd from "@/components/TodoAdd";
+import Loading from "@/components/Loading";
 import TodoItem from "@/components/TodoItem";
-import { EventBus } from "@/event-bus";
+import { mapGetters } from "vuex";
 
 export default {
   name: "TodoList",
   data() {
     return {
-      activeTab: "all",
-      todos: [
-        {
-          id: 1,
-          title: "Finish Vue Screencast",
-          completed: false,
-          editing: false,
-        },
-        {
-          id: 2,
-          title: "Take over world",
-          completed: false,
-          editing: false,
-        },
-      ],
+      page: 1,
     };
   },
-  created() {
-    EventBus.$on("removedTodo", (id) => this.removeTodo(id));
-    EventBus.$on("updatedItem", (todos) => this.updateTodo(todos));
-    EventBus.$on("checkAllChanged", (checked) => this.checkAll(checked));
-    EventBus.$on("filterChanged", (filter) => (this.activeTab = filter));
-  },
   computed: {
-    filteredTodos() {
-      if (this.activeTab === "all") {
-        return this.todos;
-      } else if (this.activeTab === "active") {
-        return this.todos.filter((todo) => !todo.completed);
-      } else if (this.activeTab === "clear completed") {
-        return this.clearedTodos();
-      }
-      return this.todos;
+    pageCount() {
+      const last_page = this.$store.state.meta.last_page;
+      return last_page ? last_page : 0;
     },
-    showClearBtn() {
-      return this.todos.filter((todo) => todo.completed).length > 0;
-    },
-    remaining() {
-      return this.todos.filter((todo) => !todo.completed).length;
-    },
-    anyRemaining() {
-      return this.remaining !== 0;
-    },
+    ...mapGetters(["todosFiltered"]),
+  },
+  created() {
+    this.$store.dispatch("retrieveTodos");
   },
   methods: {
-    addTodo(newTodos) {
-      this.todos.push(newTodos);
-    },
-    updateTodo(data) {
-      const index = this.todos.findIndex((todo) => todo.id === data.todo.id);
-      this.todos.splice(index, 1, data.todo);
-    },
-    removeTodo(id) {
-      const index = this.todos.findIndex((todo) => todo.id === id);
-      this.todos.splice(index, 1);
-    },
-    clearedTodos() {
-      this.todos = this.todos.filter((todo) => !todo.completed);
-      this.activeTab = "all";
-      return this.todos;
-    },
-    checkAll(checked) {
-      this.todos.forEach((todo) => (todo.completed = checked));
+    getTodosByPage(page) {
+      this.page = page;
+      this.$store.dispatch("retrieveTodos", page);
     },
   },
   components: {
@@ -106,6 +79,7 @@ export default {
     TodoItem,
     TodoItemRemaining,
     TodoCheckAll,
+    Loading,
     TodoTabs,
   },
 };
@@ -116,36 +90,36 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.todo-tabs {
+.pagination {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
+  list-style-type: none;
+  padding: 18px 0;
+  border-top: 1px solid gray;
+  outline: none;
 
-  input {
-    margin-right: 12px;
-  }
-
-  & > span {
-    color: rgb(112, 112, 112);
-  }
-
-  button {
-    margin-left: 8px;
-    background: rgb(21, 89, 179);
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    transition: all 0.2s;
-    border-radius: 2px;
-
-    &:hover {
-      cursor: pointer;
-      background: rgb(12, 61, 126);
+  & li {
+    &.active a {
+      background-color: #4caf50;
+      color: white;
+      border: 1px solid #4caf50;
     }
 
-    &.active {
-      background: rgb(0, 42, 134);
+    &:hover:not(.active) {
+      background-color: #ddd;
+    }
+
+    & a {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      border: 1px solid #ddd;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 }

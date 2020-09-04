@@ -3,26 +3,23 @@
     <input
       type="checkbox"
       id="check-all"
-      :checked="!anyRemaining"
-      @change="allChecked"
+      :checked="is_checked"
+      @change="checked_all"
     />
     <label for="check-all">Check All</label>
   </div>
 </template>
 
 <script>
-import { EventBus } from "@/event-bus";
-
 export default {
-  props: {
-    anyRemaining: {
-      type: Boolean,
-      required: true,
+  computed: {
+    is_checked() {
+      return this.$store.getters.anyRemaining;
     },
   },
   methods: {
-    allChecked() {
-      EventBus.$emit("checkAllChanged", this.anyRemaining);
+    checked_all({ target }) {
+      this.$store.dispatch("checkAll", target.checked);
     },
   },
 };

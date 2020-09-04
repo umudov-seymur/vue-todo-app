@@ -1,39 +1,67 @@
 <template>
   <div class="tab-buttons">
     <button
-      v-for="(action, index) in ['all', 'active', 'clear completed']"
+      v-for="(action, index) in ['all', 'active']"
       @click="changeTab(action)"
-      v-show="action == 'clear completed' ? showClearBtn : action"
       :class="{ active: filter === action }"
       :key="index"
     >
       {{ action | capitalize }}
     </button>
+    <button @click="clearedTodos" v-if="showClearBtn">
+      Clear completed
+    </button>
   </div>
 </template>
 
 <script>
-import { EventBus } from "@/event-bus";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  props: {
-    showClearBtn: {
-      type: Boolean,
-      required: true,
+  computed: {
+    filter() {
+      return this.$store.state.activeTab;
     },
-  },
-  data() {
-    return {
-      filter: "all",
-    };
+    ...mapGetters(["showClearBtn"]),
   },
   methods: {
-    changeTab(action) {
-      this.filter = action;
-      EventBus.$emit("filterChanged", action);
-    },
+    ...mapActions(["changeTab", "clearedTodos"]),
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.todo-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+
+  input {
+    margin-right: 12px;
+  }
+
+  & > span {
+    color: rgb(112, 112, 112);
+  }
+
+  button {
+    margin-left: 8px;
+    background: rgb(21, 89, 179);
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    transition: all 0.2s;
+    border-radius: 2px;
+
+    &:hover {
+      cursor: pointer;
+      background: rgb(12, 61, 126);
+    }
+
+    &.active {
+      background: rgb(0, 42, 134);
+    }
+  }
+}
+</style>

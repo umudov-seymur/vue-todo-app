@@ -1,14 +1,14 @@
 <template>
   <div class="todo-item">
     <div class="todo-item-left">
-      <input type="checkbox" v-model="todo.completed" @change="doneEdit" />
+      <input type="checkbox" v-model="todo.confirmed" @change="doneEdit" />
       <span
         style="margin-left:5px;"
-        v-if="!editing"
-        @dblclick="editing = true"
-        :class="{ completed: todo.completed }"
+        v-if="!todo.editing"
+        @dblclick="todo.editing = true"
+        :class="{ completed: todo.confirmed }"
       >
-        {{ title }}
+        {{ todo.title }}
       </span>
       <input
         type="text"
@@ -17,11 +17,11 @@
         v-focus
         v-else
         @blur="
-          editing = false;
+          todo.editing = false;
           newTitle = todo.title;
         "
         @keyup.esc="
-          editing = false;
+          todo.editing = false;
           newTitle = todo.title;
         "
         @keyup.enter="doneEdit"
@@ -31,65 +31,48 @@
       <button class="btn-pluralize" @click="pluralize">
         Pluralize
       </button>
-      <span class="remove-item" @click="removeTodo(id)">&times;</span>
+      <span class="remove-item" @click="removeTodo(todo.id)">&times;</span>
     </div>
   </div>
 </template>
 
 <script>
-import { EventBus } from "@/event-bus";
-import Mixin from "@/mixins/index";
+import { mapActions } from "vuex";
 
 export default {
-  mixins: [Mixin],
   props: {
     todo: {
       type: Object,
-      required: true,
-    },
-    checkAll: {
-      type: Boolean,
       required: true,
     },
   },
   data() {
     return {
       newTitle: this.todo.title,
-      ...this.todo,
     };
-  },
-  watch: {
-    checkAll() {
-      this.completed = this.checkAll ? true : this.todo.completed;
-    },
   },
   methods: {
     doneEdit() {
-      this.checkTodoInput(this.newTitle)
-        .then((title) => {
-          this.editing = false;
-          this.title = title;
-
-          EventBus.$emit("updatedItem", {
-            todo: this.$data,
-          });
-        })
-        .catch((err) => alert(err));
+      this.todo.title = this.newTitle;
+      this.$store
+        .dispatch("updateTodo", this.todo)
+        .then(() => (this.todo.editing = false))
+        .catch((err) => alert(err.response.data.errors["title"][0]));
     },
     pluralize() {
-      if (this.title.slice(-1) !== "s") {
-        this.newTitle = this.title += "'s";
+      if (this.newTitle.slice(-1) !== "s") {
+        this.newTitle = this.newTitle += "'s";
         this.doneEdit();
       }
     },
-    removeTodo(id) {
-      EventBus.$emit("removedTodo", id);
-    },
+    ...mapActions(["removeTodo"]),
   },
 };
 </script>
 
 <style lang="scss">
+@import url("https://cdn.jsdelivr.net/npm/animate.css@3.5.1");
+
 .todo-item {
   display: flex;
   align-items: center;
@@ -127,10 +110,6 @@ export default {
   padding: 4px;
   cursor: pointer;
 }
-</style>
-
-<style lang="scss">
-@import url("https://cdn.jsdelivr.net/npm/animate.css@3.5.1");
 
 .fade-enter-active,
 .fade-leave-active {

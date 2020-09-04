@@ -1,13 +1,11 @@
 <template>
   <div id="app" class="container">
-    <a href="">
-      <img
-        alt="Vue logo"
-        src="./assets/logo.png"
-        style="width:120px;"
-        @contextmenu.prevent
-      />
-    </a>
+    <img
+      alt="Vue logo"
+      src="./assets/logo.png"
+      style="width:120px;"
+      @contextmenu.prevent
+    />
     <h2>Vue js - Todo App</h2>
     <hr />
     <TodoList />
