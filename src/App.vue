@@ -6,7 +6,7 @@
       style="width:120px;"
       @contextmenu.prevent
     />
-    <h2>Vue js - Todo App</h2>
+    <h2>Vue js - Todo App with Laravel Api</h2>
     <hr />
     <TodoList />
   </div>
