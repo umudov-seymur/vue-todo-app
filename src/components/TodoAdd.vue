@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <input
-      type="text"
-      class="todo-input"
-      v-model="todoText"
-      @keyup.enter="addTodo"
-      placeholder="What needs to be done"
-    />
-  </div>
+  <input
+    type="text"
+    class="todo-input"
+    v-model="todoText"
+    @keyup.enter="addTodo"
+    placeholder="What needs to be done"
+  />
 </template>
 
 <script>
@@ -34,10 +32,10 @@ export default {
 
 <style lang="scss" scope>
 .todo-input {
-  width: 94%;
+  width: 100%;
   padding: 10px 18px;
   font-size: 18px;
-  margin-bottom: 16px;
+  margin: 16px 0;
   border: 1px solid rgb(179, 179, 179);
 
   &:focus {

@@ -7,7 +7,6 @@
       @contextmenu.prevent
     />
     <h2>Vue js - Todo App with Laravel Api</h2>
-    <hr />
     <TodoList />
   </div>
 </template>
@@ -32,9 +31,6 @@ body {
   margin: 0 auto;
 }
 #todo-app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;

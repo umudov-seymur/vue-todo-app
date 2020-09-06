@@ -35,7 +35,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
+  margin: 15px 0 8px 0;
 
   input {
     margin-right: 12px;

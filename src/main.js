@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Master from "@/layouts/Master.vue";
 
-import Paginate from "vuejs-paginate";
-Vue.component("paginate", Paginate);
-
 import { store } from "@/store/index";
 
 import router from "./router";
+
+import Paginate from "vuejs-paginate";
+Vue.component("paginate", Paginate);
 
 Vue.directive("focus", {
   // When the bound element is inserted into the DOM...
