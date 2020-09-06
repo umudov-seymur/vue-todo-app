@@ -1,5 +1,9 @@
 <template>
-  <div id="todo-app" class="container">
+  <div
+    id="todo-app"
+    class="container"
+    @keyup.ctrl.65="$store.dispatch('checkAll', true)"
+  >
     <img
       alt="Vue logo"
       src="./assets/logo.png"
