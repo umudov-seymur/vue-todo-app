@@ -24,21 +24,21 @@
           <todo-item-remaining />
           <todo-tabs />
         </div>
-        <paginate
-          :page-count="pageCount"
-          :click-handler="getTodosByPage"
-          v-model="page"
-          :prev-text="'Prev'"
-          :next-text="'Next'"
-          :container-class="'pagination'"
-        >
-        </paginate>
       </div>
       <div v-else>
         Not found's todos!
         <hr />
       </div>
     </Loading>
+    <paginate
+      :page-count="pageCount"
+      :click-handler="getTodosByPage"
+      v-model="page"
+      :prev-text="'Prev'"
+      :next-text="'Next'"
+      :container-class="'pagination'"
+    >
+    </paginate>
   </div>
 </template>
 

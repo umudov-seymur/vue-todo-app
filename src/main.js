@@ -1,11 +1,12 @@
 import Vue from "vue";
-import App from "./App.vue";
+import Master from "@/layouts/Master.vue";
 
 import Paginate from "vuejs-paginate";
 Vue.component("paginate", Paginate);
 
-// vuex state
 import { store } from "@/store/index";
+
+import router from "./router";
 
 Vue.directive("focus", {
   // When the bound element is inserted into the DOM...
@@ -25,5 +26,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   store,
-  render: (h) => h(App),
+  router,
+  render: (h) => h(Master),
 }).$mount("#app");
