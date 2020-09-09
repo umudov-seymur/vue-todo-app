@@ -27,13 +27,6 @@ export default {
 </script>
 
 <style>
-body {
-  background: rgba(253, 253, 253, 0.657);
-}
-.container {
-  max-width: 700px;
-  margin: 0 auto;
-}
 #todo-app {
   text-align: center;
   color: #2c3e50;

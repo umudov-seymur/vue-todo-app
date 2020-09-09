@@ -1,0 +1,45 @@
+div.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+
+    &>label {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    &>input {
+        border: 2px solid rgb(192, 192, 192);
+        padding: 8px;
+        height: 40px;
+        font-size: 15px;
+
+        &:focus {
+            outline: none;
+            border: 2px solid rgb(21, 165, 21);
+        }
+    }
+}
+
+form button {
+    border: none;
+    background: #229763;
+    color: white;
+    width: 100%;
+    padding: 8px;
+    height: 40px;
+    margin: 8px 0;
+    font-size: 16px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.9;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}

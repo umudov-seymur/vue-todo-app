@@ -20,6 +20,20 @@ export default {
   margin: 0;
   padding: 0;
 }
+body {
+  background: rgba(253, 253, 253, 0.657);
+}
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+.m-heading {
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  border-bottom: 2px solid rgb(21, 165, 21);
+  width: 40px;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
