@@ -2,7 +2,7 @@
   <div
     id="todo-app"
     class="container"
-    @keyup.ctrl.65="$store.dispatch('checkAll', true)"
+    @keyup.ctrl.65="$store.dispatch('todos/checkAll', true)"
   >
     <img
       alt="Vue logo"

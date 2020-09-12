@@ -14,12 +14,12 @@
 export default {
   computed: {
     is_checked() {
-      return this.$store.getters.anyRemaining;
+      return this.$store.getters["todos/anyRemaining"];
     },
   },
   methods: {
     checked_all({ target }) {
-      this.$store.dispatch("checkAll", target.checked);
+      this.$store.dispatch("todos/checkAll", target.checked);
     },
   },
 };

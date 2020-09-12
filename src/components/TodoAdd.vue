@@ -19,7 +19,7 @@ export default {
   methods: {
     addTodo() {
       this.$store
-        .dispatch("addTodo", {
+        .dispatch("todos/addTodo", {
           title: this.todoText,
           editing: false,
         })

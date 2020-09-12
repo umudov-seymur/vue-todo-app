@@ -3,11 +3,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   computed: {
-    remaining() {
-      return this.$store.getters.remaining;
-    },
+    ...mapGetters("todos", ["remaining"]),
   },
 };
 </script>

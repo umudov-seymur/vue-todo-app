@@ -20,12 +20,12 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   computed: {
     filter() {
-      return this.$store.state.activeTab;
+      return this.$store.state.todos.activeTab;
     },
-    ...mapGetters(["showClearBtn"]),
+    ...mapGetters("todos", ["showClearBtn"]),
   },
   methods: {
-    ...mapActions(["changeTab", "clearedTodos"]),
+    ...mapActions("todos", ["changeTab", "clearedTodos"]),
   },
 };
 </script>

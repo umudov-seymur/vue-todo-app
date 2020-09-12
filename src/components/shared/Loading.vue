@@ -4,7 +4,7 @@
       src="/loading.jpg"
       alt="loading"
       width="50"
-      v-if="$store.state.loading"
+      v-if="$store.state.todos.loading"
     />
     <slot v-else></slot>
   </div>

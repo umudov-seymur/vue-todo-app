@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Master from "@/layouts/Master.vue";
+import utils from "./utils";
 
 import { store } from "@/store/index";
 
@@ -16,15 +17,14 @@ Vue.directive("focus", {
   },
 });
 
-Vue.filter("capitalize", function(value) {
-  if (!value) return "";
-  value = value.toString();
-  return value.charAt(0).toUpperCase() + value.slice(1);
-});
+Vue.filter("capitalize", utils.textToUppercase);
 
 Vue.config.productionTip = false;
 
 new Vue({
+  metaInfo: {
+    titleTemplate: "f",
+  },
   store,
   router,
   render: (h) => h(Master),

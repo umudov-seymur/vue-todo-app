@@ -47,9 +47,9 @@ import TodoCheckAll from "@/components/TodoCheckAll";
 import TodoTabs from "@/components/TodoTabs";
 import TodoItemRemaining from "@/components/TodoItemRemaining";
 import TodoAdd from "@/components/TodoAdd";
-import Loading from "@/components/Loading";
+import Loading from "@/components/shared/Loading";
 import TodoItem from "@/components/TodoItem";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "TodoList",
@@ -60,18 +60,19 @@ export default {
   },
   computed: {
     pageCount() {
-      const last_page = this.$store.state.meta.last_page;
+      const last_page = this.$store.state.todos.meta.last_page;
       return last_page ? last_page : 0;
     },
-    ...mapGetters(["todosFiltered"]),
+    ...mapGetters("todos", ["todosFiltered"]),
   },
   created() {
-    this.$store.dispatch("retrieveTodos");
+    this.retrieveTodos();
   },
   methods: {
+    ...mapActions("todos", ["retrieveTodos"]),
     getTodosByPage(page) {
       this.page = page;
-      this.$store.dispatch("retrieveTodos", page);
+      this.retrieveTodos(page);
     },
   },
   components: {

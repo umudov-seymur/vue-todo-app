@@ -54,8 +54,7 @@ export default {
   methods: {
     doneEdit() {
       this.todo.title = this.newTitle;
-      this.$store
-        .dispatch("updateTodo", this.todo)
+      this.updateTodo(this.todo)
         .then(() => (this.todo.editing = false))
         .catch((err) => alert(err.response.data.errors["title"][0]));
     },
@@ -65,7 +64,7 @@ export default {
         this.doneEdit();
       }
     },
-    ...mapActions(["removeTodo"]),
+    ...mapActions("todos", ["removeTodo", "updateTodo"]),
   },
 };
 </script>
