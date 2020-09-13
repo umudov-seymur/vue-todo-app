@@ -9,7 +9,7 @@ export default {
   },
   getters: {
     isLoggedIn(state) {
-      return state.token !== null;
+      return state.token !== null && state.token !== "";
     },
     AUTH_ERROR(state) {
       return state.errors;
