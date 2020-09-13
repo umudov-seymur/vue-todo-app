@@ -9,7 +9,7 @@ export default {
   },
   getters: {
     isLoggedIn(state) {
-      return state.token !== null && state.token !== "";
+      return state.token !== null;
     },
     AUTH_ERROR(state) {
       return state.errors;
@@ -22,8 +22,9 @@ export default {
     SET_ERRORS(state, errors) {
       state.errors = errors;
     },
-    AUTH_LOGOUT(state) {
-      state.token = "";
+    DESTROY_TOKEN(state) {
+      state.token = null;
+      localStorage.removeItem("access_token");
     },
   },
   actions: {
@@ -58,8 +59,8 @@ export default {
     AUTH_LOGOUT: ({ commit }) => {
       return new Promise((resolve) => {
         auth.logout().then(() => {
-          commit("AUTH_LOGOUT");
-          localStorage.removeItem("access_token");
+          commit("DESTROY_TOKEN");
+          commit("todos/RESET_TODOS_STATE", null, { root: true });
           resolve();
         });
       });

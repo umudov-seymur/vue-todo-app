@@ -4,7 +4,7 @@ export default {
   namespaced: true,
   state: {
     activeTab: "all",
-    loading: true,
+    loading: false,
     todos: [],
     meta: {},
   },
@@ -53,6 +53,12 @@ export default {
     },
     SET_ACTIVE_TAB(state, tab) {
       state.activeTab = tab;
+    },
+    RESET_TODOS_STATE(state) {
+      state.activeTab = "all";
+      state.loading = true;
+      state.todos = [];
+      state.meta = {};
     },
     clearedTodos(state) {
       state.todos = state.todos.filter((todo) => !todo.confirmed);
